@@ -19,6 +19,12 @@ wordToBytes x = [mostSignificant x, leastSignificant x] where
 instructionsToByteString :: [Instruction] -> B.ByteString
 instructionsToByteString = B.pack . concat . map wordToBytes . concat . map instructionToWords
 
+subleq :: Word16 -> Word16 -> Word16 -> [Instruction]
+subleq x y z = [Subleq x y z]
+
+jmp :: Word16 -> [Instruction]
+jmp address = subleq 0 0 address
+
 main :: IO ()
 main = do
-    putStrLn $ show $ instructionsToByteString $ [Subleq 10 10 10]
+    putStrLn $ show $ instructionsToByteString $ jmp 100
